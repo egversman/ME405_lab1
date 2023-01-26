@@ -4,27 +4,20 @@
 
 import time
 
-def ch1_setup():
+def chAB_setup():
     """!
         
     """
-    pinA0 = pyb.Pin (pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
-    tim2 = pyb.Timer (0, 0xFFFF)
-    ch1 = tim2.channel (1, pyb.Timer, pin=pinA0)
+    pinB6 = pyb.Pin (pyb.Pin.board.PB6, pyb.Pin.OUT_PP)
+    pinB7 = pyb.Pin (pyb.Pin.board.PB7, pyb.Pin.OUT_PP)
+    tim = pyb.Timer(ENC_AB, prescaler = 0, period = 0xFFFF)
+    
+    ch1 = tim.channel (1, pyb.Timer.PWM_INVERTED, pin=pinB6)
+    ch2 = tim.channel (2, pyb.Timer.PWM_INVERTED, pin=pinB7)
+
+
     return ch1
 
-def led_brightness(ch1, brightness_percent):
-    """! Control LED Brightness
-        @param  ch1 This is the channel that we want to control the brightness on
-        @param  brightness_percent This is a percent brightness for the LED   """ 
-    ch1.pulse_width_percent (brightness_percent)
-
-# The following code only runs if thus file is run as the main script;
 if __name__ == "__main__":
-    ch1 = led_setup()
+    chAB_setup()
 
-    while True:
-        for brightness_percent in range(101):
-            led_brightness(ch1, brightness_percent)
-            time.sleep(5/101)
-    
