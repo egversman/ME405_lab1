@@ -19,12 +19,13 @@ class MotorDriver:
         @param timer Motor driver timer which generates PWM signals whose 
                frequency determines the motor speed.
         """
-        self.en_pin = en_pin
-        self.in1pin = in1pin
-        self.in2pin = in2pin
+        self.en_pin = pyb.Pin(pyb.Pin.board.en_pin, pyb.Pin.OUT_PP)
+        self.in1pin = pyb.Pin(pyb.Pin.board.in1pin, pyb.Pin.OUT_PP)
+        self.in2pin = pyb.Pin(pyb.Pin.board.in2pin, pyb.Pin.OUT_PP)
         self.timer = timer
         
         # Turn the motor off for safety
+        en_pin.value(False)
         
     def set_duty_cycle (self, level):
         """!
