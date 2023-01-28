@@ -20,7 +20,7 @@ def chAB_setup(pin1, pin2):
     return tim
 
 if __name__ == "__main__":
-    tim = chAB_setup(PB6, PB)
+    tim = chAB_setup(PB6, PB7)
     # Rotate motor by hand and use tim.counter() to verify ??
     
 
