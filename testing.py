@@ -11,20 +11,20 @@ def chAB_setup():
     """!
         
     """
-    pC6 = pyb.Pin("PC6", pyb.Pin.IN)
-    pC7 = pyb.Pin("PC7", pyb.Pin.IN)
+    pC6 = pyb.Pin(pyb.Pin.board.PC6, pyb.Pin.OUT_PP)
+    pC7 = pyb.Pin(pyb.Pin.board.PC7, pyb.Pin.OUT_PP)
     
-    tim = pyb.Timer(3, prescaler = 0, period = 0xFFFF) 
+    tim = pyb.Timer(8, prescaler = 0, period = 0xFFFF) 
     
-    ch1 = tim.channel(1, pyb.Timer.PWM, pin=pC6) 
-    ch2 = tim.channel(2, pyb.Timer.PWM, pin=pC7)
+    ch1 = tim.channel(1, pyb.Timer.ENC_AB, pin=pC6) 
+    ch2 = tim.channel(2, pyb.Timer.ENC_AB, pin=pC7)
 
     return tim
 
 if __name__ == "__main__":
+    tim = chAB_setup()
     while True:
-        tim = chAB_setup()
-        tim.counter()
+        print(tim.counter()) # this works better in the command line
     # figure out what timer # works
     # Rotate motor by hand and use tim.counter() to verify ??
     
