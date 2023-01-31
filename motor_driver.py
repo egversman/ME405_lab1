@@ -35,13 +35,13 @@ class MotorDriver:
         @param level A signed integer holding the duty cycle of the voltage sent 
                to the motor 
         """
-        # set the timer according to the specified PWM duty cycle 'level'
-        # if level >= 0:
-        #     set self.in1pin high, self.in2pin low
-        #     send self.timer signal to in1pin
-        # else:
-        #     set self.in1pin low, self.in2pin high
-        #     send self.timer signal to in2pin
+       #  set the timer according to the specified PWM duty cycle 'level'
+       #  if level >= 0:
+       #      set self.in1pin high, self.in2pin low
+       #      send self.timer signal to in1pin
+       #  else:
+       #      set self.in1pin low, self.in2pin high
+       #      send self.timer signal to in2pin
 
         
 if __name__ == "__main__":
