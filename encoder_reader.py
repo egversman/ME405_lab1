@@ -12,7 +12,7 @@ import pyb
 
 class EncoderReader:
     """! 
-    This class implements... 
+    This class contains an implementation of an encoder reader class. The file main includes a test to make sure it works properly.
     """
 
     def __init__ (self, pin1, pin2, tim_num: int):
@@ -74,9 +74,10 @@ if __name__ == "__main__":
     (counts below zero).
     '''
     import motor_driver
-    moe = motor_driver.MotorDriver('ena','in1a','in2a','tim3')
+    
+    moe = motor_driver.MotorDriver(pyb.Pin.board.PA10, pyb.Pin.board.PB4, pyb.Pin.board.PB5, 3)
     enc = EncoderReader(pyb.Pin.board.PC6, pyb.Pin.board.PC7, 8)
-    moe.set_duty_cycle(-50)
+    moe.set_duty_cycle(100)
     while True:
         print(enc.read())
     
