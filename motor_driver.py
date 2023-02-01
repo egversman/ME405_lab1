@@ -19,13 +19,40 @@ class MotorDriver:
         @param timer Motor driver timer which generates PWM signals whose 
                frequency determines the motor speed.
         """
-        self.en_pin = pyb.Pin(pyb.Pin.board.en_pin, pyb.Pin.OUT_PP)
-        self.in1pin = pyb.Pin(pyb.Pin.board.in1pin, pyb.Pin.OUT_PP)
-        self.in2pin = pyb.Pin(pyb.Pin.board.in2pin, pyb.Pin.OUT_PP)
-        self.timer = timer
+        # en_pin
+        if en_pin.lower() == "a" or en_pin.lower() == "ena":
+            self.en_pin = pyb.Pin(pyb.Pin.board.PA10,pyb.Pin.OUT_OD, pyb.Pin.PULL_UP)
+        elif en_pin.lower() == "b" or en_pin.lower() == "enb":
+            self.en_pin = pyb.Pin(pyb.Pin.board.PC1, pyb.Pin.OUT_OD, pyb.Pin.PULL_UP)
+        else:
+            raise AttributeError
+        
+        # in1pin
+        if in1pin.lower() == "a" or in1pin.lower() == "in1a":
+            self.in1pin = pyb.Pin(pyb.Pin.board.PB4, pyb.Pin.OUT_PP)
+        elif in1pin.lower() == "b" or in1pin.lower() == "in1b":
+            self.in1pin = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
+        else:
+            raise AttributeError
+    
+        # in2pin
+        if in2pin.lower() == "a" or in2pin.lower() == "in2a":
+            self.in2pin = pyb.Pin(pyb.Pin.board.PB5, pyb.Pin.OUT_PP)
+        elif in2pin.lower() == "b" or in2pin.lower() == "in2b":
+            self.in2pin = pyb.Pin(pyb.Pin.board.PA1, pyb.Pin.OUT_PP)
+        else:
+            raise AttributeError
+        
+        #timer
+        if timer.lower() == "tim3":
+            self.timer = pyb.Timer(3, prescaler = 0, period = 0xFFFF)
+        elif timer.lower() == "tim5":
+            self.timer = pyb.Timer(5, prescaler = 0, period = 0xFFFF)
+        else:
+            raise AttributeError
         
         # Turn the motor off for safety
-        en_pin.value(False)
+        self.en_pin.low()
         
     def set_duty_cycle (self, level):
         """!
@@ -35,13 +62,20 @@ class MotorDriver:
         @param level A signed integer holding the duty cycle of the voltage sent 
                to the motor 
         """
+        ch1 = self.timer.channel(1, pyb.Timer.PWM, pin=self.in1pin) 
+        ch2 = self.timer.channel(2, pyb.Timer.PWM, pin=self.in2pin)
+        
+        self.en_pin.high() #enable motor
+        
         # set the timer according to the specified PWM duty cycle 'level'
-        # if level >= 0:
-        #     set self.in1pin high, self.in2pin low
-        #     send self.timer signal to in1pin
-        # else:
-        #     set self.in1pin low, self.in2pin high
-        #     send self.timer signal to in2pin
+        if level >= 0:
+            ch1.pulse_width_percent(abs(level)) #IN1A low
+            ch2.pulse_width_percent(0) #PWM signal to IN2A
+        else:
+            ch1.pulse_width_percent(0) #IN1A low
+            ch2.pulse_width_percent(abs(level)) #PWM signal to IN2A
+        
+        
 
         
 if __name__ == "__main__":
@@ -52,6 +86,6 @@ if __name__ == "__main__":
     operation.
     '''
     # MotorDriver test
-    moe = MotorDriver (a_pin, another_pin, a_timer)
-    moe.set_duty_cycle (-42)
+    moe = MotorDriver ('a','a','a','tim3')
+    moe.set_duty_cycle (-50) # only abs 20-99 plz
 
