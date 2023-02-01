@@ -1,6 +1,6 @@
 """! @file motor_driver.py
    
-   This class contains an implementation of a motor driver class. This includes a test in main to make sure it works properly.
+   This file contains an implementation of a motor driver class. This includes a test in main to make sure it works properly.
 """
 import pyb
 
