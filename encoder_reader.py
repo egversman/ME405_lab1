@@ -23,11 +23,11 @@ class EncoderReader:
         """
         
         #this is going to assume, for now, that we're only going to use/input the pins and timer that we know works/have already used for the encoder reader
-        if pin1 == "PC6":
+        if pin1.lower() == "pc6":
             self.pin1 = pyb.Pin(pyb.Pin.board.PC6, pyb.Pin.OUT_PP)
         else:
             raise AttributeError
-        if pin2 == "PC7":
+        if pin2.lower() == "pc7":
             self.pin2 = pyb.Pin(pyb.Pin.board.PC7, pyb.Pin.OUT_PP)
         else:
             raise AttributeError
