@@ -7,11 +7,6 @@
     tim = pyb.Timer(8, prescaler = 0, period = 0xFFFF)
     ch1 = tim.channel(1, pyb.Timer.ENC_AB, pin=pC6) 
     ch2 = tim.channel(2, pyb.Timer.ENC_AB, pin=pC7)
-
-
-
-
-
 """
 
 class EncoderReader:
@@ -48,7 +43,6 @@ class EncoderReader:
         """
         
         return self.timer.counter()
-    
     
     def zero (self):
         """!
