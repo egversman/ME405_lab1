@@ -8,7 +8,7 @@ class MotorDriver:
     This class implements a motor driver for an ME405 kit. 
     """
 
-    def __init__ (self, en_pin, in1pin, in2pin, timer):
+    def __init__ (self, en_pin, in1pin, in2pin, tim_num: int):
         """! 
         motor for safety. 
         @param en_pin Motor driver enable pin. Set high to enable the motor.
@@ -19,37 +19,10 @@ class MotorDriver:
         @param timer Motor driver timer which generates PWM signals whose 
                frequency determines the motor speed.
         """
-        # en_pin
-        if en_pin.lower() == "a" or en_pin.lower() == "ena":
-            self.en_pin = pyb.Pin(pyb.Pin.board.PA10,pyb.Pin.OUT_OD, pyb.Pin.PULL_UP)
-        elif en_pin.lower() == "b" or en_pin.lower() == "enb":
-            self.en_pin = pyb.Pin(pyb.Pin.board.PC1, pyb.Pin.OUT_OD, pyb.Pin.PULL_UP)
-        else:
-            raise AttributeError
-        
-        # in1pin
-        if in1pin.lower() == "a" or in1pin.lower() == "in1a":
-            self.in1pin = pyb.Pin(pyb.Pin.board.PB4, pyb.Pin.OUT_PP)
-        elif in1pin.lower() == "b" or in1pin.lower() == "in1b":
-            self.in1pin = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
-        else:
-            raise AttributeError
-    
-        # in2pin
-        if in2pin.lower() == "a" or in2pin.lower() == "in2a":
-            self.in2pin = pyb.Pin(pyb.Pin.board.PB5, pyb.Pin.OUT_PP)
-        elif in2pin.lower() == "b" or in2pin.lower() == "in2b":
-            self.in2pin = pyb.Pin(pyb.Pin.board.PA1, pyb.Pin.OUT_PP)
-        else:
-            raise AttributeError
-        
-        #timer
-        if timer.lower() == "tim3":
-            self.timer = pyb.Timer(3, prescaler = 0, period = 0xFFFF)
-        elif timer.lower() == "tim5":
-            self.timer = pyb.Timer(5, prescaler = 0, period = 0xFFFF)
-        else:
-            raise AttributeError
+        self.en_pin = pyb.Pin(en_pin, pyb.Pin.OUT_OD, pyb.Pin.PULL_UP)
+        self.in1pin = pyb.Pin(in1pin, pyb.Pin.OUT_PP)
+        self.in2pin = pyb.Pin(in2pin, pyb.Pin.OUT_PP)
+        self.timer = pyb.Timer(tim_num, prescaler = 0, period = 0xFFFF)
         
         # Turn the motor off for safety
         self.en_pin.low()
@@ -88,6 +61,6 @@ if __name__ == "__main__":
     operation.
     '''
     # MotorDriver test
-    moe = MotorDriver ('ena','in1a','in2a','tim3')
+    moe = MotorDriver (pyb.Pin.board.PA10, pyb.Pin.board.PB4, pyb.Pin.board.PB5, 3)
     moe.set_duty_cycle (100) # only abs 20-99 plz
 

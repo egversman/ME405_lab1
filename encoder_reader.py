@@ -15,7 +15,7 @@ class EncoderReader:
     This class implements... 
     """
 
-    def __init__ (self, pin1, pin2, timer):
+    def __init__ (self, pin1, pin2, tim_num: int):
         """!
         Creates an encoder reader by...
         @param pin1 
@@ -24,19 +24,10 @@ class EncoderReader:
         """
         
         #this is going to assume, for now, that we're only going to use/input the pins and timer that we know works/have already used for the encoder reader
-        if pin1.lower() == "pc6":
-            self.pin1 = pyb.Pin(pyb.Pin.board.PC6, pyb.Pin.OUT_PP)
-        else:
-            raise AttributeError
-        if pin2.lower() == "pc7":
-            self.pin2 = pyb.Pin(pyb.Pin.board.PC7, pyb.Pin.OUT_PP)
-        else:
-            raise AttributeError
-        if timer.lower() == "tim8" or timer == "8":
-            self.timer = pyb.Timer(8, prescaler = 0, period = 0xFFFF)
-        else:
-            raise AttributeError
-        
+        self.pin1 = pyb.Pin(pin1, pyb.Pin.OUT_PP)
+        self.pin2 = pyb.Pin(pin2, pyb.Pin.OUT_PP)
+        self.timer = pyb.Timer(tim_num, prescaler = 0, period = 0xFFFF)
+
         # self.pin1 = pyb.Pin(..)
         self.timer.channel(1, pyb.Timer.ENC_AB, pin=self.pin1) 
         self.timer.channel(2, pyb.Timer.ENC_AB, pin=self.pin2)
@@ -84,7 +75,7 @@ if __name__ == "__main__":
     '''
     import motor_driver
     moe = motor_driver.MotorDriver('ena','in1a','in2a','tim3')
-    enc = EncoderReader("PC6", "PC7", "8")
+    enc = EncoderReader(pyb.Pin.board.PC6, pyb.Pin.board.PC7, 8)
     moe.set_duty_cycle(-50)
     while True:
         print(enc.read())
