@@ -9,7 +9,6 @@ class MotorDriver:
 
     def __init__ (self, en_pin, in1pin, in2pin, timer):
         """! 
-        Creates a motor driver by initializing GPIO pins and turning off the 
         motor for safety. 
         @param en_pin Motor driver enable pin. Set high to enable the motor.
         @param in1pin First directional pin. Set this pin high and send it a PWM
