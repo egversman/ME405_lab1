@@ -1,18 +1,12 @@
 """! @file encoder_reader.py
-    
+   This class contains an implementation of an encoder reader class. The file main includes a test to make sure it works properly. 
 """
-"""!
-    pC6 = pyb.Pin(pyb.Pin.board.PC6, pyb.Pin.OUT_PP)
-    pC7 = pyb.Pin(pyb.Pin.board.PC7, pyb.Pin.OUT_PP)
-    tim = pyb.Timer(8, prescaler = 0, period = 0xFFFF)
-    ch1 = tim.channel(1, pyb.Timer.ENC_AB, pin=pC6) 
-    ch2 = tim.channel(2, pyb.Timer.ENC_AB, pin=pC7)
-"""
+
 import pyb
 
 class EncoderReader:
     """! 
-    This class contains an implementation of an encoder reader class. The file main includes a test to make sure it works properly.
+    This implements an encoder reader for the ME 405.
     """
 
     def __init__ (self, pin1, pin2, tim_num: int):
