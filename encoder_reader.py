@@ -8,6 +8,7 @@
     ch1 = tim.channel(1, pyb.Timer.ENC_AB, pin=pC6) 
     ch2 = tim.channel(2, pyb.Timer.ENC_AB, pin=pC7)
 """
+import pyb
 
 class EncoderReader:
     """! 
@@ -31,25 +32,46 @@ class EncoderReader:
             self.pin2 = pyb.Pin(pyb.Pin.board.PC7, pyb.Pin.OUT_PP)
         else:
             raise AttributeError
-        if timer == "8":
+        if timer.lower() == "tim8" or timer == "8":
             self.timer = pyb.Timer(8, prescaler = 0, period = 0xFFFF)
         else:
             raise AttributeError
-        ch1 = self.timer.channel(1, pyb.Timer.ENC_AB, pin=self.pin1) 
-        ch2 = self.timer.channel(2, pyb.Timer.ENC_AB, pin=self.pin2)
+        
+        # self.pin1 = pyb.Pin(..)
+        self.timer.channel(1, pyb.Timer.ENC_AB, pin=self.pin1) 
+        self.timer.channel(2, pyb.Timer.ENC_AB, pin=self.pin2)
+        
+        self.curr_pos = 0
+        self.prev_count = 0
+        
     def read (self):
         """!
         Returns the current position of the motor.
         """
+    
+        curr_count = self.timer.counter()
+        difference = curr_count - self.prev_count
         
-        return self.timer.counter()
+        if (difference) > (65535 // 2):
+            difference -= 65535
+            
+        if (difference) < -(65535 // 2):
+            difference += 65535
+        
+        self.curr_pos += difference
+        self.prev_count = curr_count
+        
+        return self.curr_pos
+    
+
     
     def zero (self):
         """!
         Reads the current position of the motor and sets the count to 0 at that 
         current position.
         """
-        self.timer.counter().reset()
+        self.prev_count = self.timer.counter()
+        self.curr_pos = 0
         
         
 if __name__ == "__main__":
@@ -60,24 +82,13 @@ if __name__ == "__main__":
     code must work if the timer overflows (counts above 216 − 1) or underflows 
     (counts below zero).
     '''
-    encoder = EncoderReader("PC6", "PC7", "8")
-    lastcount = 0
-    newcount = 0
-    rotation = 0
-    flow = 0
-    
+    import motor_driver
+    moe = motor_driver.MotorDriver('ena','in1a','in2a','tim3')
+    enc = EncoderReader("PC6", "PC7", "8")
+    moe.set_duty_cycle(-50)
     while True:
-        newcount = encoder.read()
-        if (abs(newcount - lastcount) < 60000):
-            rotation = rotation + (newcount - lastcount)
-            lastcount = newcount
-        elif newcount < lastcount:
-            flow = (65535 - lastcount) + newcount
-            rotation = rotation + flow
-            lastcount = newcount
-        else:
-            flow = (65535 - newcount) + lastcount
-            rotation = rotation - flow
-            lastcount = newcount
-        print(rotation)
+        print(enc.read())
+    
+    
+
 
