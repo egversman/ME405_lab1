@@ -22,6 +22,7 @@ class EncoderReader:
         """!
         Returns the current position of the motor.
         """
+        return self.timer.counter()
     
     
     def zero (self):
@@ -29,6 +30,7 @@ class EncoderReader:
         Reads the current position of the motor and sets the count to 0 at that 
         current position.
         """
+        self.timer.counter().reset()
         
         
 if __name__ == "__main__":

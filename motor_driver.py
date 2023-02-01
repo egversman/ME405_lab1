@@ -75,7 +75,7 @@ class MotorDriver:
             ch1.pulse_width_percent(0) #IN1A low
             ch2.pulse_width_percent(abs(level)) #PWM signal to IN2A
         
-        
+        print (f"Setting duty cycle to {level}")
 
         
 if __name__ == "__main__":
@@ -86,6 +86,6 @@ if __name__ == "__main__":
     operation.
     '''
     # MotorDriver test
-    moe = MotorDriver ('a','a','a','tim3')
-    moe.set_duty_cycle (-50) # only abs 20-99 plz
+    moe = MotorDriver ('ena','in1a','in2a','tim3')
+    moe.set_duty_cycle (-99) # only abs 20-99 plz
 
