@@ -68,6 +68,8 @@ class MotorDriver:
         self.en_pin.high() #enable motor
         
         # set the timer according to the specified PWM duty cycle 'level'
+        if abs(level) >= 99:
+            level = 99
         if level >= 0:
             ch1.pulse_width_percent(abs(level)) #IN1A low
             ch2.pulse_width_percent(0) #PWM signal to IN2A
@@ -87,5 +89,5 @@ if __name__ == "__main__":
     '''
     # MotorDriver test
     moe = MotorDriver ('ena','in1a','in2a','tim3')
-    moe.set_duty_cycle (-99) # only abs 20-99 plz
+    moe.set_duty_cycle (100) # only abs 20-99 plz
 
