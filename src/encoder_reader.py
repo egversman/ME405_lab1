@@ -73,7 +73,7 @@ if __name__ == "__main__":
     code must work if the timer overflows (counts above 216 − 1) or underflows 
     (counts below zero).
     '''
-    import src.motor_driver as motor_driver
+    import motor_driver
     moe = motor_driver.MotorDriver('ena','in1a','in2a','tim3')
     enc = EncoderReader(pyb.Pin.board.PC6, pyb.Pin.board.PC7, 8)
     moe.set_duty_cycle(-50)
