@@ -1,22 +1,27 @@
 """! @file encoder_reader.py
-    This file contains an implementation of an encoder reader class. The file main includes a test to make sure it works properly. 
+    This file contains an implementation of an encoder reader class. The file 
+    main includes a test to make sure it works properly. 
 """
 import pyb
 
 class EncoderReader:
     """! 
-    This class implements an encoder reader for the ME 405.
+    This class implements an encoder reader for the ME 405 lab kit.
     """
 
     def __init__ (self, pin1, pin2, tim_num: int):
         """!
-        Creates an encoder reader by...
-        @param pin1 
-        @param pin2 
-        @param timer 
+        Initializes an EncoderReader object.
+        @param pin1  First pin connecting the encoder to the motor.
+        @param pin2  Second pin connecting the encoder to the motor.
+        @param timer Selected controller timer to use for the encoder. The timer
+               reads pulses from the encoder and counts the distance and 
+               direction of motion.
         """
         
-        #this is going to assume, for now, that we're only going to use/input the pins and timer that we know works/have already used for the encoder reader
+        #this is going to assume, for now, that we're only going to use/input 
+        # the pins and timer that we know works/have already used for the 
+        # encoder reader
         self.pin1 = pyb.Pin(pin1, pyb.Pin.OUT_PP)
         self.pin2 = pyb.Pin(pin2, pyb.Pin.OUT_PP)
         self.timer = pyb.Timer(tim_num, prescaler = 0, period = 0xFFFF)
@@ -67,7 +72,9 @@ if __name__ == "__main__":
     (counts below zero).
     '''
     import motor_driver
-    moe = motor_driver.MotorDriver (pyb.Pin.board.PA10, pyb.Pin.board.PB4, pyb.Pin.board.PB5, 3)
+    moe = motor_driver.MotorDriver (
+        pyb.Pin.board.PA10, pyb.Pin.board.PB4, pyb.Pin.board.PB5, 3
+        )
     enc = EncoderReader(pyb.Pin.board.PC6, pyb.Pin.board.PC7, 8)
     moe.set_duty_cycle(-50)
     while True:

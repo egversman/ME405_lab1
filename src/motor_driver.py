@@ -1,6 +1,7 @@
 """! @file motor_driver.py
    
-   This file contains an implementation of a motor driver class. This includes a test in main to make sure it works properly.
+   This file contains an implementation of a motor driver class. This includes a
+   test in main to make sure it works properly.
 """
 import pyb
 
@@ -11,7 +12,8 @@ class MotorDriver:
 
     def __init__ (self, en_pin, in1pin, in2pin, tim_num: int):
         """! 
-        motor for safety. 
+        Initializes selected pins and timer appropriately. Turns the motor off 
+        for safety. 
         @param en_pin Motor driver enable pin. Set high to enable the motor.
         @param in1pin First directional pin. Set this pin high and send it a PWM
                signal (with in2pin set low) to power the motor CW (?).
@@ -62,6 +64,8 @@ if __name__ == "__main__":
     operation.
     '''
     # MotorDriver test
-    moe = MotorDriver (pyb.Pin.board.PA10, pyb.Pin.board.PB4, pyb.Pin.board.PB5, 3)
+    moe = MotorDriver (
+        pyb.Pin.board.PA10, pyb.Pin.board.PB4, pyb.Pin.board.PB5, 3
+        )
     moe.set_duty_cycle (100) # only abs 20-99 plz
 
