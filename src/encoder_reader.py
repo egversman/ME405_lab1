@@ -1,13 +1,6 @@
 """! @file encoder_reader.py
     This file contains an implementation of an encoder reader class. The file main includes a test to make sure it works properly. 
 """
-"""!
-    pC6 = pyb.Pin(pyb.Pin.board.PC6, pyb.Pin.OUT_PP)
-    pC7 = pyb.Pin(pyb.Pin.board.PC7, pyb.Pin.OUT_PP)
-    tim = pyb.Timer(8, prescaler = 0, period = 0xFFFF)
-    ch1 = tim.channel(1, pyb.Timer.ENC_AB, pin=pC6) 
-    ch2 = tim.channel(2, pyb.Timer.ENC_AB, pin=pC7)
-"""
 import pyb
 
 class EncoderReader:
@@ -74,7 +67,7 @@ if __name__ == "__main__":
     (counts below zero).
     '''
     import motor_driver
-    moe = motor_driver.MotorDriver('ena','in1a','in2a','tim3')
+    moe = motor_driver.MotorDriver (pyb.Pin.board.PA10, pyb.Pin.board.PB4, pyb.Pin.board.PB5, 3)
     enc = EncoderReader(pyb.Pin.board.PC6, pyb.Pin.board.PC7, 8)
     moe.set_duty_cycle(-50)
     while True:
